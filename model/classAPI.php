@@ -29,10 +29,18 @@ class api
     }
 
     public function loga ($usuario,$senha){
-	
-	$this->usuario;
-	$this->senha;
-	
+		$resultado=shell_exec("curl -w '%{http_code}' 'http://backoffice.kinghost.net/login' -d 'login=$usuario&senha=$senha&submit=Entrar'");
+		if($resultado=="302"){
+			$ch = curl_init('http://backoffice.kinghost.net/login');
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_HEADER, 1);
+			$result = curl_exec($ch);
+			preg_match("/PHPSESSID=[a-zA-Z0-9]*/", $result, $phpsessid);
+			echo explode('=',$phpsessid[0])[1];
+		}
+		else{
+			echo "Não logado";
+		}
 	}
 
 	public function numResponsavel(){
@@ -40,7 +48,4 @@ class api
 		$idBko = preg_replace( '/[^0-9]/', '', $idBko);
 
 	}
-}
-
-
 }
