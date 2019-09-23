@@ -3,7 +3,7 @@ require('check.php');
 if(isset($_COOKIE['finger']) && validaSessaoBko($phpsessid)){
  $finger=$_COOKIE['finger'];
  $phpsessid=$_COOKIE['bko'];
- $nome = explode('/', $path)[1];
+ @$nome = explode('/', $path)[1];
  $nome = trim(str_replace('.txt', '', $nome));
  include("idBko.php");
  include("reqBko.php");
