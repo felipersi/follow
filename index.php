@@ -1,8 +1,13 @@
 <?php
 include_once('model/classAPI.php');
 
-//$idchamado = '207329';
-//$requisicaoapi = new api($idchamado);
-//$requisicaoapi->consulta($idchamado);
+//$idchamado = '2516475';
 $requisicaoapi = new api();
-$requisicaoapi->loga("bruno.minossi","218211415kinghost");
+$phpsessid = $requisicaoapi->loga("bruno.minossi","218211415kinghost");
+//var_dump($phpsessid);
+
+$idBko = $requisicaoapi-> numResponsavel($phpsessid);
+var_dump($requisicaoapi-> consultaBko($phpsessid,1,$idBko));
+
+
+
