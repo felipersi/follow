@@ -10,7 +10,7 @@ if(isset($_COOKIE['finger']) && validaSessaoBko($phpsessid)){
  $output=true;
  $i=1;
    do{
-    $output=aguardando($phpsessid,$idBko,$i,"meus");
+    $output=aguardando($phpsessid,$idBko,$i,"outros");
     $i=$i+1;
     }while($output!=false);
   }
@@ -18,3 +18,4 @@ else{
 echo "Não autorizado";
 echo "<script>alert('Sessão inválida\nFaça login');window.location.href='/monitor'</script>";
 }
+

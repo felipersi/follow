@@ -1,11 +1,16 @@
 <?php
 include('ws.php');
-function aguardando($phpsessid,$idBko,$i){
+function aguardando($phpsessid,$idBko,$i,$tipo){
  $ch= curl_init();
  curl_setopt($ch,CURLOPT_URL, "http://backoffice.kinghost.net/chamado/list/p/".$i);
  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=$phpsessid","Accept: application/json","X-Requested-With: XMLHttpRequest","Content-Type: application/x-www-form-urlencoded;"));
  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+ if($tipo=="meus"){
  curl_setopt($ch, CURLOPT_POSTFIELDS, "status=aberto&grupopertence=0&interno=0&login=$idBko&situacao=aguardandocliente");
+ }
+ if($tipo=="outros"){
+ curl_setopt($ch, CURLOPT_POSTFIELDS, "status=aberto&grupopertence=1&interno=0&situacao=aguardandocliente&aba=meus&order_asc=dataUltimaInteracao");
+ }
  $result= curl_exec($ch);
  curl_close($ch);
  $result = json_decode($result);
@@ -18,13 +23,14 @@ echo "<head><script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
 <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy' crossorigin='anonymous'></script>
 <style>body{width: 70%; border-width: 0.1px; margin-left: 10%;}div{margin:1%;}p{margin:0px;}</style></head><body>";
  echo "<table class='table table-striped table-hover'>";
- echo "<thead class='thead-dark'> <tr><th scope='col'>Última Interação</th> <th scope='col'>Assunto</th> <th scope='col'>Chamado</th> <th scope='col'>Obs. Interna</th><th scope='col'>Resposta</th><th scope='col'>Ação</th></tr> </thead>";
+ echo "<thead class='thead-dark'> <tr><th scope='col'>Última Interação</th><th scope='col'>Categoria</th> <th scope='col'>Assunto</th> <th scope='col'>Chamado</th> <th scope='col'>Resposta</th><th scope='col'>Obs. Interna</th><th scope='col'>Ação</th></tr> </thead>";
  foreach($result -> list as $key){
   echo "<tr>";
   echo "<td>".$key -> dataUltimaInteracao."</td>";
+  ws(intval($key -> id),"categorias");
   echo "<td>".$key -> assunto."</td>";
   echo "<td><a href='http://www.backoffice.kinghost.net/chamado/index/id/".$key -> id."'>".$key -> id."</a></td>";
-  ws(intval($key -> id));
+  ws(intval($key -> id),"interacoes");
   echo "<td><button type='button' class='btn btn-outline-secondary' data-content='".$key -> id." 24'>24h</button><button type='button' class='btn btn-outline-success' data-content='".$key -> id." 48'>48h</button>";
   echo "</tr>";
  }
