@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <link rel="shortcut icon" href="/images/favicon.ico" />
+        <title>BackOffice KingHost</title><!-- bootstrap -->
+<link href="/libs/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="/libs/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+<!-- link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet" -->
+<!--<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">-->
+<link href="/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+<style type="text/css" title="currentStyle">
+
+	@import "/css/jquery-ui-1.8.10.custom.css";
+    @import "/css/bo-admin.css";
+    @import "/css/jquery.fancybox-1.3.4.css";
+    @import "/css/tipTip.css";
+    @import "/css/jquery.multiselect.css";
+    @import "/css/jquery.multiselect.filter.css";
+    @import "/js/uploadify/uploadify.css";
+
+</style>
+
+
+    <script src="/js/jquery.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap.js"></script>
+    <!-- <script src="/js/jquery.tooltip.js"></script> -->
+    <script src="/js/tela-atendente-provisoria.js"></script>
+    <script src="/js/jquery-ui-.min.js"></script>
+    <script src="/js/jquery.fancybox-1.3.4.js"></script>
+    <script src="/js/jquery.mousewheel-3.0.4.pack.js"></script>
+    <script src="/js/jquery.form.js"></script>
+    <script src="/js/ui.selectmenu.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/jquery.multiselect.min.js"></script>
+    <script src="/js/jquery.multiselect.filter.min.js"></script>
+    <!-- <script src="/js/jquery.tipTip.js"></script>-->
+    <script src="/js/jquery.qtip-1.0.0-rc3.min.js"></script>
+    <script src="/js/uploadify/swfobject.js"></script>
+    <script src="/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+    <script src="/js/jquery.scrollTo-min.js"></script>
+    <script src="/js/jquery.blockUI.js"></script>
+    <script src="/js/functions/fancyboxtinymce.js"></script>
+    
+    <!-- correção para script do tinyMCE que não carrega automaticamente em alguns chamados -->
+    <script src="/js/tiny_mce/tiny_mce.js"></script>
+    
+    <!-- bootstrap -->
+    
+    
+	<script>
+	  $(document).ready(function () {
+		  $('.bugTabs').live("click", function(){
+		  	var divWidth = $('.bugsWrap .textarea-div').width();
+      
+		  	if($(this).hasClass('listOpen') && $(this).not('.selected')){
+		          $('.bugsWrap').animate({
+		  			left: '-' + (divWidth) + 'px'
+		          }, 200);
+		          $('.bt-saveResp').hide();
+		      }else if($(this).hasClass('listClose') && $(this).not('.selected')){
+		          $('.bugsWrap').animate({
+		          	left: '-' + (divWidth * 2) + 'px'
+		          }, 200);
+		          $('.bt-saveResp').show();
+		      }else if($(this).hasClass('bugSend') && $(this).not('.selected')){
+		          $('.bugsWrap').animate({
+		              left: '0'
+		          }, 200);
+		          $('.bt-saveResp').show();
+		      }
+		      $('.bugTabs').removeClass('selected');
+		      $(this).addClass('selected');
+		  });
+		            
+			//kh-tooltip
+		  /*$(function(){
+        	  $(".kh-tooltip").tipTip({
+        		  defaultPosition: "top",
+        		  edgeOffset: 5,
+        		  fadeIn: 0,
+        		  fadeOut: 0
+        	  });
+          });*/
+		  $('.kh-tooltip').qtip({
+			  position: {
+                  corner: {
+                	  target: 'bottomLeft',
+                      tooltip: 'topRight'
+                  }
+              },
+              style: { 
+            	  border: {
+         	         radius: 3,
+                     color: '#e3ddef'
+         	      },
+          	      tip: { 
+                      corner: 'topRight',
+                      size: {x:5,y:5}
+          	      },
+                  name: 'light'
+               },
+               show: { delay: 1000, effect: 'fade' }
+			});
+          /* cores alternadas na tabela */
+          $("#tab-admin tr:even").addClass("even");
+          $("#tab-admin tr:odd").addClass("odd");
+          $(".table-admin tr:even").addClass("even");
+          $(".table-admin tr:odd").addClass("odd");
+          $("#tab-admin-oc tr:even").addClass("even");
+          $("#tab-admin-oc tr:odd").addClass("odd");
+          /* centralizar colunas na tabela */
+          /* modal */
+          $('a.modal').fancybox({
+      		'transitionIn'	:	'fade',
+      		'transitionOut'	:	'fade',
+      		'speedIn'		:	100,
+      		'speedOut'		:	200,
+      		'overlayOpacity' : 0,
+      		'padding'       :   0,
+      		'onComplete'	:	function() { $('.input-cliente').focus(); }
+      	});
+
+          /* adicionar linha (inventei esse $(this).parent().parent())*/
+          /* $(".ico-edit").click(function(){
+       		$($(this).parent().parent()).after('<tr><td colspan="9" class="details"><table cellspacing="0" border="0"><tr><td>Nome:</td><td><input type="text" style="width:640px;"/></td></tr><tr><td valign="top">Descrição:</td><td><textarea style="width: 640px; height: 70px;"></textarea></td></tr><tr><td colspan="2" style="text-align: right;"><button>Cancelar</button> <button>Salvar</button></td></tr></table></td></tr>');
+          }); */
+          /* Check all checkboxes*/
+
+          $(".check_all").click(function(){
+          	var checked_status = this.checked;
+          	$(".optcheck").each(function(){
+          		this.checked = checked_status;
+          	});
+		  });
+          $('#tela').uploadify({
+              'uploader':'/js/uploadify/uploadify.swf',
+              'script': '/file/upload',
+              'cancelImg':'/js/uploadify/cancel.png',
+              'scriptAccess':'always',
+              'buttonText':'anexar',
+              'removeCompleted':false,
+              'auto':true,
+              'onComplete':function(event,id,file,data,info){
+                  var data = $.parseJSON(data);
+                  if(data){
+                      fnnovoanexo();
+                      var path = data.path.match(/\/files.*/);
+                      var tipo = 0;
+                      $(".opn-chmd-wrt-anex-lst").append('<a title="'+data.fileName+'" href="/file/view/id/'+data.id+'" class="linkanexo"\><span>'+data.fileName+'</span></a>');
+                      var anexo = {
+                          'id': data.id,
+                          'pathTmp': path[0],
+                          'fileName': data.fileName,
+                          'fileType' : data.type,
+                          'tipo': tipo
+                      };
+                      anexos.push(anexo);
+                  }
+              }
+          });
+          $('#menu-top .li-user a').live('click', function(){
+      	    usrwidht = $('#menu-top .li-user .user').width();
+      	    $('#menu-top .li-user .hide').css('width', usrwidht);
+      		$('#menu-top .li-user .hide').slideToggle();
+      		$(this).toggleClass("active");
+
+      	  });
+      	  $('#menu-top .li-user ul li a').live('click', function(){
+      		$('#menu-top .li-user a').toggleClass("active");
+      	  });
+      });
+</script>
+    </head>
+    <body>
+        <div id="menu-top-wrap">
+            <div id="menu-top">
+                                <div class="fleft">
+		    <a href="/" class="home"><span title="Tela Inicial">Tela Inicial</span></a>
+		    <a href="http://backoffice.kinghost.net" class="menu-top-a selected">BackOffice</a>
+                    <a href="http://helpdesk.kinghost.net" class="menu-top-a">HelpDesk</a>
+                                    </div>
+	    </div>
+	</div>
+	<div id="telaLoginBrand">
+    <span>Kinghost</span>
+</div>
+<div id="telaLogin">
+    <span class="login-title">Login</span>
+    <h3 class="login-local">Backoffice</h3>
+    <form id="login" name="login" method="post" action="/login">
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-icon left">
+                    <i class="icon-user"></i>
+                    <input type="text" class="m-wrap placeholder-no-fix valid" placeholder="Login" name="login" id="login" />
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-icon left">
+                    <i class="icon-lock"></i>
+                    <input type="password" class="m-wrap placeholder-no-fix" placeholder="Senha" name="senha" id="senha" />
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <input type="submit" name="submit" id="submit" class="btn btn-primary" value="Entrar" />        
+        </div>
+
+        <div class="message-box">
+                    </div>
+    </form>
+</div>
+<div id="telaLoginCopy">
+    <span>&copy;</span> kinghost 2019</div>
+<script>
+    sessionStorage.clear();    
+</script>    </body>
+</html>
