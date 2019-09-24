@@ -5,14 +5,14 @@ class api
 	private $usuario;
 	private $senha;
 
-	function _construct($usuario,$senha){
+	function _construct($usuario,$senha,$url){
 
 		$this->url = 'http://backoffice.kinghost.net/login';
 		$this->usuario = $usuario;
 		$this->senha = $senha;
 
 	}
-   public function consultaWs ($idchamado,$pagina)
+   public function consulta_ws ($idchamado,$pagina)
     {
 		$handle = curl_init();
 		$url = "http://ws-backoffice.kinghost.net/chamados/".$idchamado."/".$pagina;
