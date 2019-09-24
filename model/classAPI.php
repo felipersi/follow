@@ -5,14 +5,14 @@ class api
 	private $usuario;
 	private $senha;
 
-	function _construct($usuario,$senha,$url){
+	function __construct($usuario,$senha,$url){
 
 		$this->url = 'http://backoffice.kinghost.net/login';
 		$this->usuario = $usuario;
 		$this->senha = $senha;
 
 	}
-   public function consulta_ws ($idchamado,$pagina)
+    public function consulta_ws ($idchamado,$pagina)
     {
 		$handle = curl_init();
 		$url = "http://ws-backoffice.kinghost.net/chamados/".$idchamado."/".$pagina;
@@ -23,7 +23,7 @@ class api
 		$output = json_decode($output);
  		return $output;	
     }
-    public function consultaBko ($phpsessid,$pagina,$idBko)
+    public function consulta_bko ($phpsessid,$pagina,$idBko)
     {
 		$handle = curl_init();
 		$url = "http://backoffice.kinghost.net/chamado/list/p/".$pagina;
@@ -37,14 +37,15 @@ class api
 		$output = json_decode($output);
  		return $output;	
     }
-    public function loga ($usuario,$senha){
-		$resultado=shell_exec("curl -w '%{http_code}' 'http://backoffice.kinghost.net/login' -d 'login=$usuario&senha=$senha&submit=Entrar'");
+    public function loga (){
+
+		$resultado = shell_exec("curl -w '%{http_code}' 'http://backoffice.kinghost.net/login' -d 'login=$usuario&senha=$senha&submit=Entrar'");
 		if($resultado=="302"){
 			$ch = curl_init('http://backoffice.kinghost.net/login');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "login=$usuario&senha=$senha&submit=Entrar");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, "login=$usuario&senha=".$this->senha."&submit=Entrar");
 
 			$result = curl_exec($ch);
 			preg_match("/PHPSESSID=[a-zA-Z0-9]*/", $result, $phpsessid);
@@ -55,7 +56,14 @@ class api
 		}
 	}
 
-	public function numResponsavel($phpsessid){
+	public function testa_this(){
+		echo $this->url;
+		echo $this->senha;
+		echo $this->usuario;
+
+	}
+
+	public function num_responsavel($phpsessid){
 		$idBko = shell_exec("curl -s -H 'Cookie: PHPSESSID=".$phpsessid."' 'http://www.backoffice.kinghost.net/bug' | egrep -o 'login.*$'");
 		$idBko = preg_replace( '/[^0-9]/', '', $idBko);
 		return $idBko;

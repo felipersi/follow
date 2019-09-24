@@ -1,6 +1,6 @@
 <?php
 include_once('model/classAPI.php');
-include_once('model/classDB.php');
+//include_once('model/classDB.php');
 
 /*$conecta = new db();
 $requisicaoapi = new api();
@@ -25,10 +25,18 @@ $numInteracao = $requisicaoapi->consulta_ws()->count;
       'executaCron' => ,
 
 $insert = $conecta->insert($tabela, $dados_follow);
-*/
+
+
 $usuario = 'luis';
 $senha = 'l123321l'; 
-$url = '102930';
-$requisicaoapi = new api($usuario, $senha, $url);
-$testathis = $requisicaoapi->testa_this();
+$url = '102930848';
+
+$requisicaoapi = new api($usuario,$senha, $url);
+$testathis = $requisicaoapi->testa_this($url);
 echo $testathis;
+var_dump($testathis);
+
+*/
+
+$requisicaoapi = new api("bruno.minossi","218211415kinghost",'');
+$phpsessid = $requisicaoapi->loga("bruno.minossi","218211415kinghost",'');
