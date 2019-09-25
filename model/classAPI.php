@@ -5,14 +5,14 @@ class api
 	private $usuario;
 	private $senha;
 
-	function __construct($usuario,$senha,$url){
+	function __construct($usuario,$senha){
 
-		$this->url = 'http://backoffice.kinghost.net/login';
+		//$this->url = 'http://backoffice.kinghost.net/login';
 		$this->usuario = $usuario;
 		$this->senha = $senha;
 
 	}
-    public function consulta_ws ($idchamado,$pagina)
+    public function consulta_ws($idchamado,$pagina)
     {
 		$handle = curl_init();
 		$url = "http://ws-backoffice.kinghost.net/chamados/".$idchamado."/".$pagina;
@@ -23,7 +23,7 @@ class api
 		$output = json_decode($output);
  		return $output;	
     }
-    public function consulta_bko ($phpsessid,$pagina,$idBko)
+    public function consulta_bko($phpsessid,$pagina,$idBko)
     {
 		$handle = curl_init();
 		$url = "http://backoffice.kinghost.net/chamado/list/p/".$pagina;
@@ -37,7 +37,7 @@ class api
 		$output = json_decode($output);
  		return $output;	
     }
-    public function loga (){
+    public function loga(){
 
 		$resultado = shell_exec("curl -w '%{http_code}' 'http://backoffice.kinghost.net/login' -d 'login=$usuario&senha=$senha&submit=Entrar'");
 		if($resultado=="302"){
@@ -50,10 +50,11 @@ class api
 			$result = curl_exec($ch);
 			preg_match("/PHPSESSID=[a-zA-Z0-9]*/", $result, $phpsessid);
 			return explode('=',$phpsessid[0])[1];
-		}
-		else{
+	
+			}else {
+			
 			return "Não logado";
-		}
+			 }
 	}
 
 	public function testa_this(){
@@ -62,7 +63,6 @@ class api
 		echo $this->usuario;
 
 	}
-
 	public function num_responsavel($phpsessid){
 		$idBko = shell_exec("curl -s -H 'Cookie: PHPSESSID=".$phpsessid."' 'http://www.backoffice.kinghost.net/bug' | egrep -o 'login.*$'");
 		$idBko = preg_replace( '/[^0-9]/', '', $idBko);
