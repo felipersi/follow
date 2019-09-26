@@ -5,8 +5,16 @@ $senha = $_GET["senha"];
 include_once('model/classAPI.php');
 
 $requisicaoapi = new api($usuario, $senha);
-echo $requisicaoapi -> loga();
-echo $requisicaoapi -> getBkoSes();
+if($requisicaoapi -> loga()){
+	$phpsessid = $requisicaoapi -> getBkoSes();
+	$idBko = $requisicaoapi -> num_responsavel($phpsessid);
+	var_dump($idBko);
+	var_dump($requisicaoapi -> consulta_bko($phpsessid,1,$idBko));
+	include_once('tabela.php');
+}
+else{
+	echo "Não logado";
+}
 
 
 /*include_once('model/classDB.php');

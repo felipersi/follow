@@ -5,15 +5,14 @@ class api
 	private $senha;
 	private $bko_phpsessid;
 
-	function __construct($usuario,$senha){
-
-		//$this->url = 'http://backoffice.kinghost.net/login';
+	function __construct($usuario,$senha)
+	{
 		$this->usuario = $usuario;
 		$this->senha = $senha;
-
 	}
-	function getBkoSes(){
-	return $this -> bko_phpsessid;
+	public function getBkoSes()
+	{
+		return $this -> bko_phpsessid;
 	}
     public function consulta_ws($idchamado,$pagina)
     {
@@ -41,27 +40,23 @@ class api
  		return $output;	
     }
     public function loga(){
-    	$resultado = shell_exec("curl -w '%{http_code}' 'http://backoffice.kinghost.net/login' -d 'login=".$this -> usuario."&senha=".$this -> senha."&submit=Entrar'");
-		if($resultado=="302"){
-			$ch = curl_init('http://backoffice.kinghost.net/login');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-			curl_setopt($ch, CURLOPT_HEADER, 1);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$this-> $usuario."&senha=".$this->senha."&submit=Entrar");
-
-			$result = curl_exec($ch);
-			preg_match("/PHPSESSID=[a-zA-Z0-9]*/", $result, $phpsessid);
+    	$resultado = shell_exec("curl -s -v 'http://backoffice.kinghost.net/login' -d 'login=".$this -> usuario."&senha=".$this -> senha."&submit=Entrar' 2>&1 | grep -o '302\|PHPSESSID=[a-z0-9]*'");
+		if(strpos($resultado,"302") !==false){
+			echo "logado";
+			preg_match("/PHPSESSID=[a-zA-Z0-9]*/", $resultado, $phpsessid);
 			$bko_phpsessid=explode('=',$phpsessid[0])[1];
 			$this -> bko_phpsessid = $bko_phpsessid;
-			return "Logado";
+			return true;
 
 			}else {
-			return "Não logado";
+			return false;
 			 }
 	}
 
-	public function num_responsavel($phpsessid){
+	public function num_responsavel($phpsessid)
+	{
 		$idBko = shell_exec("curl -s -H 'Cookie: PHPSESSID=".$phpsessid."' 'http://www.backoffice.kinghost.net/bug' | egrep -o 'login.*$'");
+		var_dump($idBko);
 		$idBko = preg_replace( '/[^0-9]/', '', $idBko);
 		return $idBko;
 	}
