@@ -8,8 +8,7 @@ $requisicaoapi = new api($usuario, $senha);
 if($requisicaoapi -> loga()){
 	$phpsessid = $requisicaoapi -> getBkoSes();
 	$idBko = $requisicaoapi -> num_responsavel($phpsessid);
-	var_dump($idBko);
-	var_dump($requisicaoapi -> consulta_bko($phpsessid,1,$idBko));
+	$result = $requisicaoapi -> consulta_bko($phpsessid,0,$idBko);
 	include_once('tabela.php');
 }
 else{

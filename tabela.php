@@ -11,10 +11,13 @@ echo "<head><script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
  foreach($result -> list as $key){
   echo "<tr>";
   echo "<td>".$key -> dataUltimaInteracao."</td>";
-  ws(intval($key -> id),"categorias");
+  echo "<td>categoria</td>";
+  //ws(intval($key -> id),"categorias");
   echo "<td>".$key -> assunto."</td>";
   echo "<td><a href='http://www.backoffice.kinghost.net/chamado/index/id/".$key -> id."'>".$key -> id."</a></td>";
-  ws(intval($key -> id),"interacoes");
+  echo "<td>resposta</td>";
+  echo "<td>obs interna</td>";
+  //ws(intval($key -> id),"interacoes");
   echo "<td><button type='button' class='btn btn-outline-secondary' data-content='".$key -> id." 24'>24h</button><button type='button' class='btn btn-outline-success' data-content='".$key -> id." 48'>48h</button>";
   echo "</tr>";
  }
