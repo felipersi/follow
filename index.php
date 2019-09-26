@@ -1,6 +1,15 @@
 <?php
+session_start();
+$usuario = $_GET["usuario"];
+$senha = $_GET["senha"];
 include_once('model/classAPI.php');
-include_once('model/classDB.php');
+
+$requisicaoapi = new api($usuario, $senha);
+echo $requisicaoapi -> loga();
+echo $requisicaoapi -> getBkoSes();
+
+
+/*include_once('model/classDB.php');
 
 
 $conecta = new db();
@@ -25,3 +34,4 @@ $dados_follow = array(
       'executaCron' => $cron,
 );
 $insert = $conecta->inserir($tabela, $dados_follow);
+*/
