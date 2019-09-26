@@ -63,7 +63,23 @@ class db
 
         return !empty($linha) ? $linha : false;
     }
+    public function delete($idchamado){
 
-}
+  		$sql = $this->db->prepare('DELETE FROM followup WHERE idchamado = :idchamado');
+  		$sql->bindParam(':idchamado', $idchamado); 
+  		$sql->execute();
+     
+		}   
+	public function select_hora($idchamado){
+    	
+    	$consulta = $this->db->prepare('SELECT `executaCron` FROM `followup` WHERE `idChamado` = :idChamado;');
+        $consulta->bindParam(':idChamado', $idchamado, PDO::PARAM_STR);
+        $consulta->execute();
+        $linha = $consulta->fetch(PDO::FETCH_ASSOC);
+
+
+        return !empty($linha) ? $linha : false;
+    }  
+	}
 
 
