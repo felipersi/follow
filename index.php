@@ -1,9 +1,9 @@
 <?php
 session_start();
-$usuario = $_GET["usuario"];
-$senha = $_GET["senha"];
+//$usuario = $_GET["usuario"];
+//$senha = $_GET["senha"];
 include_once('model/classAPI.php');
-
+/*
 $requisicaoapi = new api($usuario, $senha);
 if($requisicaoapi -> loga()){
 	$phpsessid = $requisicaoapi -> getBkoSes();
@@ -14,9 +14,9 @@ if($requisicaoapi -> loga()){
 else{
 	echo "Não logado";
 }
+*/
 
-
-/*include_once('model/classDB.php');
+include_once('model/classDB.php');
 
 
 $conecta = new db();
@@ -31,14 +31,25 @@ $pagina ='interacoes';
 $cron = date("Y-m-d");
 $numInteracao = $requisicaoapi->consulta_ws($idchamado, $pagina)->count;
 
-
 var_dump($numInteracao);
 
 $dados_follow = array(
-      'idChamado' => '',
+      'idChamado' => $idchamado,
       'numInteracao' => $numInteracao,
       'usuario' => $usuario,
       'executaCron' => $cron,
 );
 $insert = $conecta->inserir($tabela, $dados_follow);
-*/
+$select = $conecta->select($idchamado);
+$countws = implode("", $select);
+
+if($countws == $numInteracao){
+	echo "<br>";
+	echo "Os valores são iguais, manter para o follow";
+
+}else if($countws < $numInteracao){
+	echo "Remover dos follows";
+
+}else{
+	echo "Opss... erro inesperado, fale com o dev do sistema";
+}

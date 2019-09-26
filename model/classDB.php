@@ -53,6 +53,16 @@ class db
         }
     
     }
+    public function select($idchamado){
+    	
+    	$consulta = $this->db->prepare('SELECT `numInteracao` FROM `followup` WHERE `idChamado` = :idChamado;');
+        $consulta->bindParam(':idChamado', $idchamado, PDO::PARAM_STR);
+        $consulta->execute();
+        $linha = $consulta->fetch(PDO::FETCH_ASSOC);
+
+
+        return !empty($linha) ? $linha : false;
+    }
 
 }
 
