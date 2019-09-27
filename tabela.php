@@ -11,8 +11,9 @@ echo "<head><script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
  foreach($result -> list as $key){
   echo "<tr>";
   echo "<td>".$key -> dataUltimaInteracao."</td>";
-  echo "<td>categoria</td>";
+  //echo "<td>categoria</td>";
   //ws(intval($key -> id),"categorias");
+  echo "<td>".$requisicaoapi -> consulta_ws($key -> id,"categorias") -> nome."</td>";
   echo "<td>".$key -> assunto."</td>";
   echo "<td><a href='http://www.backoffice.kinghost.net/chamado/index/id/".$key -> id."'>".$key -> id."</a></td>";
   echo "<td>resposta</td>";

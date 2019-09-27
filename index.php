@@ -1,20 +1,32 @@
 <?php
-session_start();
-//$usuario = $_GET["usuario"];
-//$senha = $_GET["senha"];
+
+$usuario = $_POST["usuario"];
+$senha = $_POST["senha"];
 include_once('model/classAPI.php');
-/*
-$requisicaoapi = new api($usuario, $senha);
-if($requisicaoapi -> loga()){
-	$phpsessid = $requisicaoapi -> getBkoSes();
-	$idBko = $requisicaoapi -> num_responsavel($phpsessid);
-	$result = $requisicaoapi -> consulta_bko($phpsessid,0,$idBko);
-	include_once('tabela.php');
+
+if(isset($usuario)&&isset($senha)){
+	$requisicaoapi = new api($usuario, $senha);
+	if($requisicaoapi -> loga()){
+		$phpsessid = $requisicaoapi -> getBkoSes();
+		$idBko = $requisicaoapi -> num_responsavel($phpsessid);
+		$result = $requisicaoapi -> consulta_bko($phpsessid,0,$idBko);
+		include_once('tabela.php');
+	}
+	else{
+		echo "<script>alert('Dados inválidos');window.history.back();</script>";
+	}
 }
 else{
-	echo "Não logado";
+	echo '
+		<form action="index.php" method="post">
+ 		<p>Usuário: <input type="text" name="usuario" /></p>
+ 		<p>Senha: <input type="password" name="senha" /></p>
+ 		<p><input value="Logar" type="submit" /></p>
+		</form>
+	';
 }
-*/
+
+/*
 include_once('model/classDB.php');
 
 
@@ -57,7 +69,7 @@ if($countws == $numInteracao){
 	echo "<br>";
 	echo "Opss... erro inesperado, fale com o dev do sistema";
 }
-*/
+
 
 //verificar se já passou 24 horas.
 $hora_banco = $conecta->select_hora($idchamado);
@@ -76,4 +88,4 @@ if($timediff > 86400){
  	echo 'Menos de 24 horas';
 }
 
-
+*/
