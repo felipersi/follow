@@ -53,6 +53,12 @@ class api
 		$output = json_decode($output);
  		return $output;	
     }
+    public function prepara_follow($chamado,$follow,$phpsessid){
+
+    }
+    public function follow_up(){
+
+    }
     public function loga(){
     	$resultado = shell_exec("curl -s -v 'http://backoffice.kinghost.net/login' -d 'login=".$this -> usuario."&senha=".$this -> senha."&submit=Entrar' 2>&1 | grep -o '302\|PHPSESSID=[a-z0-9]*'");
 		if(strpos($resultado,"302") !==false){

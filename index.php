@@ -1,12 +1,15 @@
 <?php
-
-$usuario = $_POST["usuario"];
-$senha = $_POST["senha"];
+session_start();
 include_once('model/classAPI.php');
 
-if(isset($usuario)&&isset($senha)){
+if(isset($_POST["usuario"])||isset($_SESSION["usuario"])){
+	$usuario = isset($_POST["usuario"]) ? $_POST["usuario"] : $_SESSION["usuario"];
+	$senha = isset($_POST["senha"]) ? $_POST["senha"] : $_SESSION["senha"];
+
 	$requisicaoapi = new api($usuario, $senha);
 	if($requisicaoapi -> loga()){
+		$_SESSION["usuario"]=$usuario;
+		$_SESSION["senha"]=$senha;
 		$phpsessid = $requisicaoapi -> getBkoSes();
 		echo '<script>var phpsessid="'.$phpsessid.'"</script>';
 		$idBko = $requisicaoapi -> num_responsavel($phpsessid);
@@ -14,6 +17,7 @@ if(isset($usuario)&&isset($senha)){
 		include_once('tabela.php');
 	}
 	else{
+		session_destroy();
 		echo "<script>alert('Dados inválidos');window.history.back();</script>";
 	}
 }
