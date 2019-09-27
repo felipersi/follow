@@ -49,7 +49,6 @@ class api
   		curl_setopt($handle, CURLOPT_HTTPHEADER, array('Accept: application/json'));
   		curl_setopt($handle, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=$phpsessid","Accept: application/json","X-Requested-With: XMLHttpRequest","Content-Type: application/x-www-form-urlencoded;"));
 		curl_setopt($handle, CURLOPT_POSTFIELDS, "status=aberto&grupopertence=0&interno=0&login=$idBko&situacao=aguardandocliente");
-
 		$output= curl_exec($handle);
 		$output = json_decode($output);
  		return $output;	
