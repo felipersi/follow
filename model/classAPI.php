@@ -32,10 +32,10 @@ class api
 				$ultimaInteracao = array_pop($output -> content) -> data;
 		 		$output = "<td>".$ultimaInteracao -> nomeLogin."<br>".str_replace(array('<div>&nbsp;</div>','<p>&nbsp;</p>'),"",$ultimaInteracao -> descricao)."</td>";
 		  		if($ultimaInteracao -> observacoes){
-		   			$output+= "<td>".$ultimaInteracao -> observacoes."</td>";
+		   			$output.= "<td>".$ultimaInteracao -> observacoes."</td>";
 		  		}
 		  		else{
-		   		$output+= "<td> Nenhuma </td>";
+		   		$output.= "<td> Nenhuma </td>";
 		  		}
  			}
  		return $output;	
