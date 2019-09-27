@@ -9,8 +9,6 @@ class api
 	{
 		$this->usuario = $usuario;
 		$this->senha = $senha;
-		$_SESSION["usuario"] =  $usuario;
-		$_SESSION["senha"] =  $senha;
 	}
 	public function getBkoSes()
 	{
