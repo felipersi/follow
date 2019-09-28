@@ -9,7 +9,7 @@ $(document).ready(function(){
  var confirmar=true;
  }
  if(confirmar){
- $.post('follow.php',"chamado="+datacontent[0]+"&follow="+datacontent[1]+"&phpsessid="+phpsessid).done(
+ $.post('admin.php',"chamado="+datacontent[0]+"&follow="+datacontent[1]).done(
   function(e){
    alert('followUp realizado');
    $(b).remove();

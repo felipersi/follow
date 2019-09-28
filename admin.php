@@ -9,14 +9,26 @@ if(isset($_SESSION["usuario"])&&isset($_SESSION["senha"])){
 	$usuario = $_SESSION["usuario"];
 	$senha = $_SESSION["senha"];
 
-	$requisicaoapi = new api($usuario, $senha);
-	$requisicaoapi -> loga();
-	$phpsessid = $requisicaoapi -> getBkoSes();
-	$_SESSION["phpsessid"]=$phpsessid;
-	echo '<script>var phpsessid="'.$phpsessid.'"</script>';
-	$idBko = $requisicaoapi -> num_responsavel($phpsessid);
-	$result = $requisicaoapi -> consulta_bko($phpsessid,1,$idBko);
-	include_once('tabela.php');
+	if(isset($_POST["chamado"])&&isset($_POST["follow"])){
+	  $phpsessid=$_SESSION["phpsessid"];
+	  $follow=$_POST["follow"];
+	  $chamado=$_POST["chamado"]; 
+	  $requisicaoapi = new api($usuario, $senha);
+	  $output = $requisicaoapi -> prepara_follow($chamado,$follow,$phpsessid);
+	}
+	else{
+
+		$requisicaoapi = new api($usuario, $senha);
+		$requisicaoapi -> loga();
+		$phpsessid = $requisicaoapi -> getBkoSes();
+		$_SESSION["phpsessid"]=$phpsessid;
+		
+		
+			$idBko = $requisicaoapi -> num_responsavel($phpsessid);
+			$result = $requisicaoapi -> consulta_bko($phpsessid,1,$idBko);
+			include_once('tabela.php');
+		
+	}
 }
 else{
 	unset($_SESSION["usuario"]);	

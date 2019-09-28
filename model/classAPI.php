@@ -54,10 +54,39 @@ class api
  		return $output;	
     }
     public function prepara_follow($chamado,$follow,$phpsessid){
-
-    }
-    public function follow_up(){
-
+      $ch= curl_init();
+	  curl_setopt($ch,CURLOPT_URL, "http://ws-backoffice.kinghost.net/chamados/".$chamado);
+	  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
+	  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	  $info= curl_exec($ch);
+	  $info = json_decode($infos);
+	  $idCliente=$info->cliente;
+	  $idResponsavel=$info->idResponsavel;
+	  if($follow == "24")
+	  {
+	    $texto="Olá, tudo bem?<br>Ainda não identifiquei seu retorno quanto a última interação deste chamado.<br>Por gentileza, peço que verifique as informações solicitadas e me retorne para que possamos continuar a verificação.<br>Caso não responda este chamado o status será alterado para 'resolvido' podendo ser reaberto por até 5 dias. <br>Sigo à sua disposição!<br>Atenciosamente,";
+	    $resposta="chamado=$chamado&descricao=$texto&observacoes=&status=5&cliente=$idCliente&responsavel=$idResponsavel&grupo=-1";
+	  }
+	  elseif($follow == "48")
+	  {
+	    $texto="Olá, tudo bem?<br>Estou encerrando este chamado, devido a falta de retorno. <br>Caso haja necessidade de tratar novamente esta dificuldade, efetue uma nova interação em até 5 dias para reabrir este chamado. Passando deste período, você deverá abrir um novo em nosso pelo painel de controle.<br>Em caso de qualquer dúvida adicional, seguimos à disposição através de nossos canais de atendimento.<br>Atenciosamente,";
+	    $resposta="chamado=".$chamado."&descricao=".$texto."&observacoes=&status=6&cliente=".$idCliente."&responsavel=".$idResponsavel."&grupo=-1";
+	  }
+	  else
+	  {
+	    $resposta="Olá";
+	  } 
+	  return $this->follow_up($resposta,$phpsessid);
+	}
+    public function follow_up($resposta,$phpsessid){
+    	 $ch = curl_init();
+		  curl_setopt($ch,CURLOPT_URL, "http://backoffice.kinghost.net/interacao/add");
+		  curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=".$phpsessid,"Accept: application/json","X-Requested-With: XMLHttpRequest","Content-Type: application/x-www-form-urlencoded;"));
+		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		  curl_setopt($ch, CURLOPT_POSTFIELDS, $resposta);
+		  $result= curl_exec($ch);
+		  $result = json_decode($result);
+		  return true;
     }
     public function loga(){
     	$resultado = shell_exec("curl -s -v 'http://backoffice.kinghost.net/login' -d 'login=".$this -> usuario."&senha=".$this -> senha."&submit=Entrar' 2>&1 | grep -o '302\|PHPSESSID=[a-z0-9]*'");
