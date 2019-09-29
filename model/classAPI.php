@@ -8,7 +8,7 @@ class api
 	function __construct($usuario,$senha)
 	{
 		$this->usuario = $usuario;
-		$this->senha = $senha;
+		$this->senha = rawurlencode($senha);
 	}
 	public function getBkoSes()
 	{
