@@ -62,7 +62,7 @@ if(isset($_POST["usuario"])&&isset($_POST["senha"])){
 		$_SESSION["usuario"]=$usuario;
 		$_SESSION["senha"]=$senha;
 		echo "Conectado! Logando ...";
-		header("Location: admin.php");
+		echo "<script>window.location.href='admin.php'</script>";
 	}
 	else{
 	echo "Dados inválidos";
